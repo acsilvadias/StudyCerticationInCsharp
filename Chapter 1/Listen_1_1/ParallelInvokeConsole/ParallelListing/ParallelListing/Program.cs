@@ -14,7 +14,9 @@ namespace ParallelListing
             //CallParallelForEach();
             //CallParallelForEachFor();
             //CallParallelLoopResult();
-            CallParallelLinqQuery();
+            //CallParallelLinqQuery();
+            CallExercicioMeasureUp();
+
 
             Console.WriteLine("Finished processing. Press a key to end.");
             Console.ReadKey();
@@ -62,7 +64,8 @@ namespace ParallelListing
         {
             var items = Enumerable.Range(0, 500).ToArray();
 
-            ParallelLoopResult result = Parallel.For(0,items.Count(),(int i, ParallelLoopState p) =>{
+            ParallelLoopResult result = Parallel.For(0, items.Count(), (int i, ParallelLoopState p) =>
+            {
                 if (i == 200)
                     p.Stop();
 
@@ -128,5 +131,46 @@ namespace ParallelListing
             Console.WriteLine("Task1 2 ending");
         }
         #endregion
+
+
+        #region ExercicioMeasureUp 01
+        private static void CallExercicioMeasureUp()
+        {
+            Costumer customer1 = new Costumer { Name = "Janet" };
+            TestCustomer1(customer1);
+
+            Costumer customer2 = new Costumer { Name = "Kim" };
+            TestCustomer2(ref customer2);
+
+            Card card1 = new Card { Number = "1111" };
+            TestCard1(card1);
+
+            Card card2 = new Card { Number = "2222" };
+            TestCard2(ref card2);
+
+        }
+
+        static void TestCustomer1(Costumer customer) => customer.Name = "Kim";
+        static void TestCustomer2(ref Costumer customer) => customer.Name = "Janet";
+
+        static void TestCard1(Card card) => card.Number = "22222";
+
+        static void TestCard2(ref Card card) => card.Number = "1111";
+
+        internal class Costumer
+        {
+            private string name;
+            public string Name { get => name; set => name = value; }
+
+        }
+
+        internal class Card
+        {
+            private string number;
+            public string Number { get => number; set => number = value; }
+
+        }
+        #endregion
     }
+
 }
