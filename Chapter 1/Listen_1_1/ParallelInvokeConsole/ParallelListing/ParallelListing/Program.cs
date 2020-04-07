@@ -133,7 +133,7 @@ namespace ParallelListing
         #endregion
 
 
-        #region ExercicioMeasureUp 01
+     #region ExercicioMeasureUp 01
         private static void CallExercicioMeasureUp()
         {
             Costumer customer1 = new Costumer { Name = "Janet" };
@@ -148,16 +148,21 @@ namespace ParallelListing
             Card card2 = new Card { Number = "2222" };
             TestCard2(ref card2);
 
+            Console.WriteLine("customer1: " + customer1.Name);
+            Console.WriteLine("customer2: " + customer2.Name);
+            Console.WriteLine("card1: " + card1.Number);
+            Console.WriteLine("card2: " + card2.Number);
+
         }
 
         static void TestCustomer1(Costumer customer) => customer.Name = "Kim";
         static void TestCustomer2(ref Costumer customer) => customer.Name = "Janet";
 
-        static void TestCard1(Card card) => card.Number = "22222";
+        static void TestCard1(Card card) => card.Number = "2222";
 
         static void TestCard2(ref Card card) => card.Number = "1111";
 
-        internal class Costumer
+        internal  class Costumer
         {
             private string name;
             public string Name { get => name; set => name = value; }
