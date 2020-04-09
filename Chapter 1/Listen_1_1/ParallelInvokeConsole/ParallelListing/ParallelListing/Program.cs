@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using System.Dynamic;
 
 namespace ParallelListing
 {
@@ -15,7 +16,9 @@ namespace ParallelListing
             //CallParallelForEachFor();
             //CallParallelLoopResult();
             //CallParallelLinqQuery();
-            CallExercicioMeasureUp();
+            //CallExercicioMeasureUp();
+            //CallExpandoObjectSample();
+            CallEnforceEcapsulation();
 
 
             Console.WriteLine("Finished processing. Press a key to end.");
@@ -23,6 +26,56 @@ namespace ParallelListing
         }
 
 
+
+        #region ***** Use Enforce encapsulation 2.29 *****
+        class BAnckAccount
+        {
+            private decimal _accountBalance = 0;
+
+            public void PayInFunds(decimal amountToPayIn)
+            {
+                _accountBalance = _accountBalance + amountToPayIn;
+            }
+
+            public bool WithdrawFunds(decimal amountWithdraw)
+            {
+                if (amountWithdraw > _accountBalance)
+                    return false;
+
+                _accountBalance = _accountBalance - amountWithdraw;
+                return true;
+            }
+
+            public decimal GetBalance()
+            {
+                return _accountBalance;
+            }
+        }
+
+        private static void CallEnforceEcapsulation()
+        {
+            BAnckAccount c = new BAnckAccount();
+            c.PayInFunds(50);
+            Console.WriteLine("Pay in 50");
+            c.PayInFunds(50);
+            if (c.WithdrawFunds(10))
+                Console.WriteLine("Withdraw 10");
+
+            Console.WriteLine("Account balance is: {0}", c.GetBalance());
+
+        }
+        #endregion
+
+        #region ***** Use ExpandoObject Properties Listing 2-25 *****
+        private static void CallExpandoObjectSample()
+        {
+            dynamic person = new ExpandoObject();
+
+            person.Name = "Antônio Carlos";
+            person.Age = 43 + 1;
+            Console.WriteLine("Name: {0} Age: {1}", person.Name, person.Age);
+        }
+        #endregion
         #region ***** Parallel.Linq.Query Listing 5 *****
         class Person
         {
@@ -132,8 +185,7 @@ namespace ParallelListing
         }
         #endregion
 
-
-     #region ExercicioMeasureUp 01
+        #region ***** ExercicioMeasureUp 01 *****
         private static void CallExercicioMeasureUp()
         {
             Costumer customer1 = new Costumer { Name = "Janet" };
@@ -155,14 +207,14 @@ namespace ParallelListing
 
         }
 
-        static void TestCustomer1(Costumer customer) => customer.Name = "Kim";
+        static void TestCustomer1(Costumer customer) { customer.Name = "Kim"; }
         static void TestCustomer2(ref Costumer customer) => customer.Name = "Janet";
 
         static void TestCard1(Card card) => card.Number = "2222";
 
         static void TestCard2(ref Card card) => card.Number = "1111";
 
-        internal  class Costumer
+        internal class Costumer
         {
             private string name;
             public string Name { get => name; set => name = value; }
