@@ -19,16 +19,15 @@ namespace ParallelListing
             //CallExercicioMeasureUp();
             //CallExpandoObjectSample();
             CallEnforceEcapsulation();
-
-
+            
             Console.WriteLine("Finished processing. Press a key to end.");
             Console.ReadKey();
         }
 
 
-
         #region ***** Use Enforce encapsulation 2.29 *****
-        class BAnckAccount
+
+        class BanckAccount 
         {
             private decimal _accountBalance = 0;
 
@@ -37,7 +36,7 @@ namespace ParallelListing
                 _accountBalance = _accountBalance + amountToPayIn;
             }
 
-            public bool WithdrawFunds(decimal amountWithdraw)
+            public virtual bool WithdrawFunds(decimal amountWithdraw)
             {
                 if (amountWithdraw > _accountBalance)
                     return false;
@@ -52,9 +51,23 @@ namespace ParallelListing
             }
         }
 
+        private class OverdraftAccount : BanckAccount
+        {
+            decimal overdraftLimit = 100;
+            decimal _amountbalance = 0;
+
+            public override bool WithdrawFunds(decimal amountToWithdraw)
+            {
+                if (amountToWithdraw > base.GetBalance() + overdraftLimit)
+                    return false;
+
+                _amountbalance = _amountbalance - amountToWithdraw;
+                return true;
+            }
+        }
         private static void CallEnforceEcapsulation()
         {
-            BAnckAccount c = new BAnckAccount();
+            OverdraftAccount c = new OverdraftAccount();
             c.PayInFunds(50);
             Console.WriteLine("Pay in 50");
             c.PayInFunds(50);
@@ -76,6 +89,7 @@ namespace ParallelListing
             Console.WriteLine("Name: {0} Age: {1}", person.Name, person.Age);
         }
         #endregion
+
         #region ***** Parallel.Linq.Query Listing 5 *****
         class Person
         {
