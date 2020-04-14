@@ -11,6 +11,9 @@ namespace ParallelListing
 
         static void Main(string[] args)
         {
+            CallStringComparisonAndculture();
+
+            //CallStartWithAndEndWith();
             //CallParallelInvoke();
             //CallParallelForEach();
             //CallParallelForEachFor();
@@ -18,12 +21,43 @@ namespace ParallelListing
             //CallParallelLinqQuery();
             //CallExercicioMeasureUp();
             //CallExpandoObjectSample();
-            CallEnforceEcapsulation();
+            //CallEnforceEcapsulation();
             
             Console.WriteLine("Finished processing. Press a key to end.");
             Console.ReadKey();
         }
 
+
+        #region ***** String comparison and cultures   *****
+        private static void CallStringComparisonAndculture()
+        {
+            
+        }
+
+        #endregion
+
+        #region ***** StringBuilder 2.67,68,69 *****
+        private static void CallStartWithAndEndWith()
+        {
+            string strSample = " Antônio Carlos da Silva Dias";
+
+            Console.WriteLine("Nome Atual: [ {0} ] deve retirar --> [{1} ]", strSample, " da");
+            Console.WriteLine("Nome para exibir: {0}", RemoveString(strSample," da"));
+        }
+
+        private static string RemoveString(string source, string search)
+        {
+            int position = source.IndexOf(search);
+            string newSource = null;
+            if (position >= 0)
+            {
+                newSource = source.Remove(position, search.Length);
+            }
+
+            return newSource;
+        }
+        
+        #endregion
 
         #region ***** Use Enforce encapsulation 2.29 *****
 
