@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using System.Dynamic;
+using System.Globalization;
 
 namespace ParallelListing
 {
@@ -11,8 +12,10 @@ namespace ParallelListing
 
         static void Main(string[] args)
         {
-            CallStringComparisonAndculture();
+            CallStringInterpolation();
 
+            //CallMusicTrackFormatter();
+            //CallStringComparisonAndCulture();
             //CallStartWithAndEndWith();
             //CallParallelInvoke();
             //CallParallelForEach();
@@ -27,11 +30,82 @@ namespace ParallelListing
             Console.ReadKey();
         }
 
+        #region ***** String comparison ,cultures  and interpolation *****
 
-        #region ***** String comparison and cultures   *****
-        private static void CallStringComparisonAndculture()
+        private static void CallStringInterpolation()
         {
-            
+            string name = "Bob";
+            int age = 21;
+
+            Console.WriteLine("Your name is {0} and your age is {1,-5:D}", name, age);
+            Console.WriteLine($"With Interpolation Your name is {name} and your age is {age,-5:D}");
+
+            Console.WriteLine($"C#,7");
+            Console.WriteLine($"[{"VB",7}]");
+
+        }
+
+
+        private static void CallMusicTrackFormatter()
+        {
+            MusicTrack song = new MusicTrack(artist: "Rob Miles", title: "My Way");
+
+            Console.WriteLine("Track: {0:F}", song);
+            Console.WriteLine("Artist: {0:A}", song);
+            Console.WriteLine("Title: {0:T}", song);
+
+        }
+        class MusicTrack : IFormattable
+        {
+            string Artist{ get ; set; }
+            string Title{ get; set ; }
+
+            public string ToString(string format, IFormatProvider formatProvider)
+            {
+                if (string.IsNullOrWhiteSpace(format))
+                    format = "G";
+
+                switch (format)
+                {
+                    case "A": return Artist;
+                    case "T": return Title;
+
+                    case "G"://default format
+                    case "F": return Artist + " " + Title;
+                    default:
+                        throw new FormatException("Format spefier was invalid.");
+                }
+
+
+            }
+
+            public override string ToString()
+            {
+                return Artist + " " + Title;
+            }
+
+            public MusicTrack(string artist, string title)
+            {
+                Artist = artist;
+                Title = title;
+            }
+
+        }
+        private static void CallStringComparisonAndCulture()
+        {
+            int i = 99;
+            double pi = 3.141592654;
+
+            Console.WriteLine(" {0, -10:D}{0, -10:X}{1,5:N2} {1,5:C2}", i, pi);
+
+            double value = 12345.6789;
+
+            Console.WriteLine(value.ToString("C2",CultureInfo.CurrentCulture));
+            Console.WriteLine(value.ToString("C3", CultureInfo.CurrentCulture));
+            Console.WriteLine(value.ToString("C", CultureInfo.CreateSpecificCulture("en-US")));
+
+
+
         }
 
         #endregion
