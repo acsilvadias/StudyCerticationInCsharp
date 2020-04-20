@@ -4,6 +4,8 @@ using System.Threading;
 using System.Linq;
 using System.Dynamic;
 using System.Globalization;
+using System.Security.Cryptography;
+using System.IO;
 
 namespace ParallelListing
 {
@@ -12,8 +14,10 @@ namespace ParallelListing
 
         static void Main(string[] args)
         {
-            CallStringInterpolation();
 
+            CallAESencryptoin();
+
+            //CallStringInterpolation();
             //CallMusicTrackFormatter();
             //CallStringComparisonAndCulture();
             //CallStartWithAndEndWith();
@@ -29,6 +33,101 @@ namespace ParallelListing
             Console.WriteLine("Finished processing. Press a key to end.");
             Console.ReadKey();
         }
+
+        #region ***** AES encryptoin *****
+
+        static void dumpBytes(string title, byte[] bytes)
+        {
+            Console.Write(title);
+            foreach (byte b in bytes)
+            {
+                Console.Write("{0:X} ", b);
+            }
+            Console.WriteLine();
+        }
+
+        private static void CallAESencryptoin()
+        {
+            string plaintext = "This is my super secret data";
+
+            // byte array to hold the encrypted message
+            byte[] cipherText;
+
+            // byte array to hold the key that was used for encryption 
+            byte[] key;
+
+            //byte array to hold the initialization vector that was use
+            byte[] initializationVector;
+
+            //Create as Aes instance
+            //This creates a random key and initialization vector
+
+            using (Aes aes = Aes.Create())
+            {
+                key = aes.Key;
+                initializationVector = aes.IV;
+
+                ICryptoTransform encryptor = aes.CreateEncryptor();
+
+                using (MemoryStream encryptMemorySream = new MemoryStream())
+                {
+                    using (CryptoStream encryptCryptoStream = 
+                                        new CryptoStream(encryptMemorySream,
+                                        encryptor, CryptoStreamMode.Write))
+
+                    {
+                        using (StreamWriter  swEncrypt =
+                                            new StreamWriter(encryptCryptoStream))
+                        {
+                            swEncrypt.Write(plaintext);
+                        }
+                        cipherText = encryptMemorySream.ToArray();
+                    }
+
+                }
+            }
+
+            Console.WriteLine("String to encrypt: {0}", plaintext);
+
+            dumpBytes("Key: ", key);
+            dumpBytes("Initialization: ", initializationVector);
+            dumpBytes("Encrypted: ", cipherText);
+
+            Console.WriteLine();
+            AESDecrypted(cipherText,key, initializationVector);
+        }
+
+        private static void AESDecrypted(byte[] cipherText, byte[] key, byte[] initializationVector)
+        {
+            string decryptedText;
+
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = key;
+                aes.IV = initializationVector;
+
+                ICryptoTransform decryptor = aes.CreateDecryptor();
+
+                using (MemoryStream decryptStream = new MemoryStream (cipherText))
+                {
+                    using (CryptoStream decryptCryptoStream = new CryptoStream(decryptStream,decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader srDecrypt = new StreamReader(decryptCryptoStream))
+                        {
+                            decryptedText = srDecrypt.ReadToEnd();
+                        }
+                    }
+
+                }
+
+            }
+            
+            Console.WriteLine("String to dencrypted: {0}", decryptedText);
+
+        }
+
+
+        #endregion
 
         #region ***** String comparison ,cultures  and interpolation *****
 
