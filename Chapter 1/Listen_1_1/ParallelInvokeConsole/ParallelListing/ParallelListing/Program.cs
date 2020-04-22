@@ -15,8 +15,10 @@ namespace ParallelListing
         static void Main(string[] args)
         {
 
-            CallAESencryptoin();
+            CallTaskUseLambdaExpression();
 
+            //CallMyThreadMethod();
+            //CallAESencryptoin();
             //CallStringInterpolation();
             //CallMusicTrackFormatter();
             //CallStringComparisonAndCulture();
@@ -29,10 +31,66 @@ namespace ParallelListing
             //CallExercicioMeasureUp();
             //CallExpandoObjectSample();
             //CallEnforceEcapsulation();
-            
-            Console.WriteLine("Finished processing. Press a key to end.");
-            Console.ReadKey();
+            if (true)
+            {
+                Console.WriteLine("Finished processing. Press a key to end.");
+                Console.ReadKey();
+
+            }
         }
+
+
+        #region  ***** CallTaskUseLambdaExpression Listing 8-18 The programmer Csharp (MCSD) *****
+        private static void CallTaskUseLambdaExpression()
+        {
+            Task<int> myTask = Task.Run<int>(() =>
+            {
+                Console.WriteLine("Hello from myTask<int>");
+                Thread.Sleep(1000);
+                return 10;
+            });
+
+            Console.WriteLine("Hello from Main Thread");
+
+            int i = myTask.Result;
+
+            Console.WriteLine("myTask has a return value = {0}", i);
+            Console.WriteLine("Bye From Main Thread");
+
+        }
+
+
+        #endregion
+
+        #region ***** CallMyThreadMethod Listing 8-1 The programmer Csharp (MCSD) *****
+        private static void CallMyThreadMethod()
+        {
+            Thread myThread = new Thread(new ParameterizedThreadStart(myThreadMethod));
+
+            myThread.Start(10);
+            myThread.IsBackground = false;
+            //myThread.Join(); //garante que avai aguardar a thread finalizar
+
+
+            Console.WriteLine("Hello From Main Thread");
+        }
+
+        static void myThreadMethod(object snippet)
+        {
+            int count = (int)snippet ;
+            
+
+            Console.WriteLine("Hello From My Custom Thread");
+            for (int i = 0; i < count; i++)
+            {
+                Console.Write("{0} ", i);
+
+            }
+            Console.WriteLine();
+            Console.WriteLine("Bye From My Custon Thread");
+        }
+
+        #endregion
 
         #region ***** AES encryptoin *****
 
@@ -71,12 +129,12 @@ namespace ParallelListing
 
                 using (MemoryStream encryptMemorySream = new MemoryStream())
                 {
-                    using (CryptoStream encryptCryptoStream = 
+                    using (CryptoStream encryptCryptoStream =
                                         new CryptoStream(encryptMemorySream,
                                         encryptor, CryptoStreamMode.Write))
 
                     {
-                        using (StreamWriter  swEncrypt =
+                        using (StreamWriter swEncrypt =
                                             new StreamWriter(encryptCryptoStream))
                         {
                             swEncrypt.Write(plaintext);
@@ -94,7 +152,7 @@ namespace ParallelListing
             dumpBytes("Encrypted: ", cipherText);
 
             Console.WriteLine();
-            AESDecrypted(cipherText,key, initializationVector);
+            AESDecrypted(cipherText, key, initializationVector);
         }
 
         private static void AESDecrypted(byte[] cipherText, byte[] key, byte[] initializationVector)
@@ -108,9 +166,9 @@ namespace ParallelListing
 
                 ICryptoTransform decryptor = aes.CreateDecryptor();
 
-                using (MemoryStream decryptStream = new MemoryStream (cipherText))
+                using (MemoryStream decryptStream = new MemoryStream(cipherText))
                 {
-                    using (CryptoStream decryptCryptoStream = new CryptoStream(decryptStream,decryptor, CryptoStreamMode.Read))
+                    using (CryptoStream decryptCryptoStream = new CryptoStream(decryptStream, decryptor, CryptoStreamMode.Read))
                     {
                         using (StreamReader srDecrypt = new StreamReader(decryptCryptoStream))
                         {
@@ -121,7 +179,7 @@ namespace ParallelListing
                 }
 
             }
-            
+
             Console.WriteLine("String to dencrypted: {0}", decryptedText);
 
         }
@@ -156,8 +214,8 @@ namespace ParallelListing
         }
         class MusicTrack : IFormattable
         {
-            string Artist{ get ; set; }
-            string Title{ get; set ; }
+            string Artist { get; set; }
+            string Title { get; set; }
 
             public string ToString(string format, IFormatProvider formatProvider)
             {
@@ -199,7 +257,7 @@ namespace ParallelListing
 
             double value = 12345.6789;
 
-            Console.WriteLine(value.ToString("C2",CultureInfo.CurrentCulture));
+            Console.WriteLine(value.ToString("C2", CultureInfo.CurrentCulture));
             Console.WriteLine(value.ToString("C3", CultureInfo.CurrentCulture));
             Console.WriteLine(value.ToString("C", CultureInfo.CreateSpecificCulture("en-US")));
 
@@ -215,7 +273,7 @@ namespace ParallelListing
             string strSample = " Antônio Carlos da Silva Dias";
 
             Console.WriteLine("Nome Atual: [ {0} ] deve retirar --> [{1} ]", strSample, " da");
-            Console.WriteLine("Nome para exibir: {0}", RemoveString(strSample," da"));
+            Console.WriteLine("Nome para exibir: {0}", RemoveString(strSample, " da"));
         }
 
         private static string RemoveString(string source, string search)
@@ -229,12 +287,12 @@ namespace ParallelListing
 
             return newSource;
         }
-        
+
         #endregion
 
         #region ***** Use Enforce encapsulation 2.29 *****
 
-        class BanckAccount 
+        class BanckAccount
         {
             private decimal _accountBalance = 0;
 
