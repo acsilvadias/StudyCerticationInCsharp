@@ -15,8 +15,10 @@ namespace ParallelListing
         static void Main(string[] args)
         {
 
-            CallTaskUseLambdaExpression();
+            CallDebuggingAndDiagnosticsIncrement();
 
+
+            //CallTaskUseLambdaExpression();
             //CallMyThreadMethod();
             //CallAESencryptoin();
             //CallStringInterpolation();
@@ -38,6 +40,21 @@ namespace ParallelListing
 
             }
         }
+
+
+        #region ***** CallDebuggingAndDiagnosticsIncrement Listing 15-13 The programmer csharp *****
+        private static void CallDebuggingAndDiagnosticsIncrement()
+        {
+            int counter = 15;
+
+            for (int i = 0; i < counter; i++)
+            {
+
+                
+            }
+        }
+
+        #endregion
 
 
         #region  ***** CallTaskUseLambdaExpression Listing 8-18 The programmer Csharp (MCSD) *****
@@ -77,8 +94,8 @@ namespace ParallelListing
 
         static void myThreadMethod(object snippet)
         {
-            int count = (int)snippet ;
-            
+            int count = (int)snippet;
+
 
             Console.WriteLine("Hello From My Custom Thread");
             for (int i = 0; i < count; i++)
